@@ -1,0 +1,16 @@
+.item {
+    max-width: 284px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+}
+
+.price {
+    display: flex;
+    justify-content: center;
+}
+
+.caption {
+    text-align: center;
+}
