@@ -16,8 +16,8 @@ const BurgerConstructor = () => {
                 />
 
                 <ul className={`${constructorStyle.list} custom-scroll`}>
-                    {data.forEach(item => {
-                        if ((item.type === 'main' && item.price <= 800) || (item.type === 'sauce' && item.price <= 80)) {
+                    {data.map(item => {
+                        if (item.type === 'main' || item.type === 'sauce') 
                             return (
                                 <li className={`${constructorStyle.item} mt-4 pr-5`} key={item._id}>
                                     <DragIcon />
@@ -29,7 +29,7 @@ const BurgerConstructor = () => {
                                 </li>
                             )
                         }
-                    })}
+                    )}
                 </ul>
 
                 <ConstructorElement

@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './components/app/app.jsx';
 import './vendor/normalize.css';
+<<<<<<< HEAD
+=======
 import 'core-js/actual';
+>>>>>>> month-7/step-1
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
