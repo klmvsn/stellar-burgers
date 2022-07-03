@@ -1,9 +1,11 @@
 .item {
     max-width: 284px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     position: relative;
     align-items: center;
+    cursor: pointer;
 }
 
 .price {
