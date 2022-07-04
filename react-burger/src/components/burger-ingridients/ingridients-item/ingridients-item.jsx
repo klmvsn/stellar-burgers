@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import itemStyle from './ingridients-item.module.css';
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from 'prop-types';
 import IngridientDetails from '../ingridient-details/ingridient-details';
+import { itemTypes } from '../../../utils/types';
 
 const IngridientsItem = ({item}) => {
     const [isIngridientDetailsModalOpen, setIngridientDetailsModal] = useState(false);
@@ -26,20 +26,7 @@ const IngridientsItem = ({item}) => {
 }
 
 IngridientsItem.propTypes = {
-    item: PropTypes.shape({
-        calories: PropTypes.number.isRequired,
-        carbohydrates: PropTypes.number.isRequired,
-        fat: PropTypes.number.isRequired,
-        image: PropTypes.string.isRequired,
-        image_large: PropTypes.string.isRequired,
-        image_mobile: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired,
-        price: PropTypes.number.isRequired,
-        proteins: PropTypes.number.isRequired,
-        type: PropTypes.string.isRequired,
-        __v: PropTypes.number.isRequired,
-        _id: PropTypes.string.isRequired
-    }).isRequired
+    item: itemTypes
 }
 
 

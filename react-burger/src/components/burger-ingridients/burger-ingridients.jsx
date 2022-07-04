@@ -4,6 +4,7 @@ import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from 'prop-types';
 import categories from "../../utils/categories";
 import IngridientsCategory from "./ingridients-category/ingridients-category";
+import { arrayOfIngridientsTypes } from "../../utils/types";
 
 
 const BurgerIngridients = ({ingridients}) => {
@@ -32,7 +33,7 @@ const BurgerIngridients = ({ingridients}) => {
 }
 
 BurgerIngridients.propTypes = {
-    ingridients: PropTypes.arrayOf(PropTypes.object).isRequired
+    ingridients: arrayOfIngridientsTypes
 }
 
 export default BurgerIngridients;

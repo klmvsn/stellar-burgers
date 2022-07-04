@@ -2,7 +2,7 @@ import constructorStyle from './burger-constructor.module.css';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useState } from 'react';
 import OrderDetails from './order-details/order-details';
-import PropTypes from 'prop-types';;
+import { arrayOfIngridientsTypes } from '../../utils/types';
 
 const BurgerConstructor = ({ ingridients }) => {
     const [isOrderDetailsModalOpen, setOrderDetailsModal] = useState(false);
@@ -60,7 +60,7 @@ const BurgerConstructor = ({ ingridients }) => {
 }
 
 BurgerConstructor.propTypes = {
-    ingridients: PropTypes.arrayOf(PropTypes.object).isRequired
+    ingridients: arrayOfIngridientsTypes
 }
 
 export default BurgerConstructor;

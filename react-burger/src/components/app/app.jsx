@@ -3,8 +3,7 @@ import styles from './app.module.css';
 import AppHeader from '../app-header/app-header';
 import BurgerIngridients from '../burger-ingridients/burger-ingridients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-
-const BASE_URL = 'https://norma.nomoreparties.space/api/ingredients';
+import { getIngridients } from '../../utils/burger-api';
 
 const App = () => {
     const [ingridientsList, setList] = useState({
@@ -20,8 +19,7 @@ const App = () => {
                 isLoading: true
             }));
             try {
-                const res = await fetch(BASE_URL);
-                const data = await res.json();
+                const data = await getIngridients();
                 setList((prevState) => ({
                     ...prevState,
                     ingridients: data.data,
@@ -40,7 +38,7 @@ const App = () => {
     }, [])
 
     return (
-        <div className={`${styles.app} custom-scroll`}>
+        <div className={`${styles.app} custom-scroll app-container`}>
             <AppHeader />
             <main className={styles.content}>
                 {ingridientsList.isLoading && 'Загрузка...'}

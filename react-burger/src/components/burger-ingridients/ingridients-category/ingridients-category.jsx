@@ -1,6 +1,7 @@
 import IngridientsItem from '../ingridients-item/ingridients-item';
 import categoryStyle from './ingridients-category.module.css';
 import PropTypes from 'prop-types';
+import { arrayOfIngridientsTypes } from '../../../utils/types';
 
 const IngridientsCategory = ({ category, ingridients }) => {
     const items = ingridients.filter(item => item.type === category.type);
@@ -18,7 +19,7 @@ const IngridientsCategory = ({ category, ingridients }) => {
 
 IngridientsCategory.propTypes = {
     category: PropTypes.object.isRequired,
-    ingridients: PropTypes.arrayOf(PropTypes.object).isRequired
+    ingridients: arrayOfIngridientsTypes
 }
 
 export default IngridientsCategory;
