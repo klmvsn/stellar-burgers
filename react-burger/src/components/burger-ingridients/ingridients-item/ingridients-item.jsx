@@ -3,8 +3,9 @@ import itemStyle from './ingridients-item.module.css';
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngridientDetails from '../ingridient-details/ingridient-details';
 import { itemTypes } from '../../../utils/types';
+import Modal from '../../modal/modal';
 
-const IngridientsItem = ({item}) => {
+const IngridientsItem = ({ item }) => {
     const [isIngridientDetailsModalOpen, setIngridientDetailsModal] = useState(false);
 
     const handleIngridientDetailsModal = () => {
@@ -20,7 +21,9 @@ const IngridientsItem = ({item}) => {
             </div>
             <p className={`${itemStyle.caption} text text_type_main-default mt-2`}>{item.name}</p>
             <Counter count={1} size="default" />
-            <IngridientDetails isOpen={isIngridientDetailsModalOpen} handleClose={setIngridientDetailsModal} item={item}/>
+            {isIngridientDetailsModalOpen && <Modal setState={setIngridientDetailsModal}>
+                <IngridientDetails item={item} />
+            </Modal>}
         </li>
     )
 }

@@ -5,32 +5,9 @@ import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import modalStyles from './modal.module.css';
 import PropTypes from 'prop-types';
 
-const modalRoot = () => {
-    const modalContainer = document.createElement('div');
-    modalContainer.setAttribute('id', 'modal-root');
-    document.body.appendChild(modalContainer);
-    return modalContainer;
-}
+const modalRoot = document.querySelector('#modal');
 
-const Modal = ({ isOpen, setState, children }) => {
-    const [modalElement, setModalElement] = useState(null);
-
-    useEffect(() => {
-        let modal = document.getElementById('modal-root');
-        let isModalSet = false;
-        if (!modal) {
-            isModalSet = !isModalSet;
-            modal = modalRoot();
-        }
-        setModalElement(modal);
-
-        return () => {
-            if (isModalSet && modal.parentNode) {
-                modal.parentNode.removeChild(modal);
-            }
-        }
-    }, [])
-
+const Modal = ({ setState, children }) => {
     const closeModal = (e) => {
         e.stopPropagation();
         setState(false);
@@ -47,7 +24,7 @@ const Modal = ({ isOpen, setState, children }) => {
 
     }, [])
 
-    return !isOpen ? null : ReactDOM.createPortal(
+    return ReactDOM.createPortal(
         (
             <>
                 <ModalOverlay onClick={closeModal} />
@@ -58,11 +35,10 @@ const Modal = ({ isOpen, setState, children }) => {
                     {children}
                 </div>
             </>
-        ), modalElement);
+        ), modalRoot);
 }
 
 Modal.propTypes = {
-    isOpen: PropTypes.bool.isRequired,
     setState: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired
 }

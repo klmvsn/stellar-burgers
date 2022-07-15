@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from 'react';
 import OrderDetails from './order-details/order-details';
 import { IngridientsContext } from '../../services/ingridientsContext';
 import { postOrder } from '../../utils/burger-api';
+import Modal from '../modal/modal';
 
 const BurgerConstructor = () => {
     const [totalPrice, setTotalPrice] = useState(0);
@@ -76,7 +77,9 @@ const BurgerConstructor = () => {
                     <CurrencyIcon />
                 </div>
                 <Button type="primary" size="large" onClick={handleOrderDetailssModal}>Оформить заказ</Button>
-                <OrderDetails isOpen={isOrderDetailsModalOpen} handleClose={setOrderDetailsModal} orderData={orderData} />
+               {isOrderDetailsModalOpen && <Modal setState={setOrderDetailsModal}>
+                    <OrderDetails orderData={orderData}/>
+                </Modal>}
             </div>
         </section>
     )
