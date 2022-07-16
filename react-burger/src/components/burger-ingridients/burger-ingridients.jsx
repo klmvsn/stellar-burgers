@@ -1,13 +1,10 @@
 import React from "react";
 import ingridientsStyle from './burger-ingridients.module.css';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from 'prop-types';
 import categories from "../../utils/categories";
 import IngridientsCategory from "./ingridients-category/ingridients-category";
-import { arrayOfIngridientsTypes } from "../../utils/types";
 
-
-const BurgerIngridients = ({ingridients}) => {
+const BurgerIngridients = () => {
     const [current, setCurrent] = React.useState('buns');
     return (
         <section className={ingridientsStyle.section}>
@@ -25,15 +22,11 @@ const BurgerIngridients = ({ingridients}) => {
             </div>
             <ul className={`${ingridientsStyle.list} custom-scroll`}>
                 {categories.map(category => (
-                    <IngridientsCategory key={category.type} category={category} ingridients={ingridients}/>
+                    <IngridientsCategory key={category.type} category={category}/>
                 ))}
             </ul>
         </section>
     )
-}
-
-BurgerIngridients.propTypes = {
-    ingridients: arrayOfIngridientsTypes
 }
 
 export default BurgerIngridients;

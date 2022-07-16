@@ -5,6 +5,19 @@ const checkResponse = (res) => {
 }
 
 export const getIngridients = () => {
-    return fetch(BASE_URL)
+    return fetch(`${BASE_URL}/ingredients`)
         .then(checkResponse);
+}
+
+export const postOrder = (orderId) => {
+    return fetch(`${BASE_URL}/orders`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            ingredients: orderId
+        })
+    })
+        .then(checkResponse)
 }

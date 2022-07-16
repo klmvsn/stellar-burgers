@@ -4,6 +4,7 @@ import AppHeader from '../app-header/app-header';
 import BurgerIngridients from '../burger-ingridients/burger-ingridients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import { getIngridients } from '../../utils/burger-api';
+import { IngridientsContext } from '../../services/ingridientsContext';
 
 const App = () => {
     const [ingridientsList, setList] = useState({
@@ -39,18 +40,20 @@ const App = () => {
 
     return (
         <div className={`${styles.app} custom-scroll app-container`}>
-            <AppHeader />
-            <main className={styles.content}>
-                {ingridientsList.isLoading && 'Загрузка...'}
-                {ingridientsList.hasError && 'Произошла ошибка'}
-                {!ingridientsList.isLoading && !ingridientsList.hasError &&
-                    ingridientsList.ingridients.length && (
-                        <>
-                            <BurgerIngridients ingridients={ingridientsList.ingridients} />
-                            <BurgerConstructor ingridients={ingridientsList.ingridients} />
-                        </>
-                    )}
-            </main>
+            <IngridientsContext.Provider value={{ ingridientsList, setList }}>
+                <AppHeader />
+                <main className={styles.content}>
+                    {ingridientsList.isLoading && 'Загрузка...'}
+                    {ingridientsList.hasError && 'Произошла ошибка'}
+                    {!ingridientsList.isLoading && !ingridientsList.hasError &&
+                        ingridientsList.ingridients.length && (
+                            <>
+                                <BurgerIngridients />
+                                <BurgerConstructor />
+                            </>
+                        )}
+                </main>
+            </IngridientsContext.Provider>
         </div>
     )
 }
