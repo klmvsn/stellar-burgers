@@ -4,13 +4,16 @@ import ModalOverlay from "../modal-overlay/modal-overlay";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import modalStyles from './modal.module.css';
 import PropTypes from 'prop-types';
+import { useDispatch } from "react-redux";
+import { resetIngridientModal } from "../../services/actions/ingridient-details";
 
 const modalRoot = document.querySelector('#modal');
 
-const Modal = ({ setState, children }) => {
+const Modal = ({ children }) => {
+    const dispatch = useDispatch();
     const closeModal = (e) => {
         e.stopPropagation();
-        setState(false);
+        dispatch(resetIngridientModal());
     }
 
     useEffect(() => {
@@ -39,7 +42,6 @@ const Modal = ({ setState, children }) => {
 }
 
 Modal.propTypes = {
-    setState: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired
 }
 

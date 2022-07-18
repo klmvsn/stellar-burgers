@@ -1,12 +1,12 @@
 import IngridientsItem from '../ingridients-item/ingridients-item';
 import categoryStyle from './ingridients-category.module.css';
 import PropTypes from 'prop-types';
-import { useContext } from 'react';
-import { IngridientsContext } from '../../../services/ingridientsContext';
+import { useSelector } from 'react-redux';
 
 const IngridientsCategory = ({ category }) => {
-    const { ingridientsList } = useContext(IngridientsContext);
-    const items = ingridientsList.ingridients.filter(item => item.type === category.type);
+    const ingridientsList = useSelector(store => store.burgerIngridients.ingridients);
+    const items = ingridientsList.filter(item => item.type === category.type);
+
     return (
         <li>
             <p className='text text_type_main-medium mt-10 mb-6'>{category.name}</p>

@@ -1,15 +1,17 @@
-import { useState } from 'react';
 import itemStyle from './ingridients-item.module.css';
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngridientDetails from '../ingridient-details/ingridient-details';
 import { itemTypes } from '../../../utils/types';
 import Modal from '../../modal/modal';
+import { useDispatch, useSelector } from 'react-redux';
+import { setIngridientModal } from '../../../services/actions/ingridient-details';
 
 const IngridientsItem = ({ item }) => {
-    const [isIngridientDetailsModalOpen, setIngridientDetailsModal] = useState(false);
+    const isIngridientDetailsModalOpen = useSelector(store => store.ingridientDetails.isModalOpen);
+    const dispatch = useDispatch();
 
     const handleIngridientDetailsModal = () => {
-        setIngridientDetailsModal(true);
+        dispatch(setIngridientModal(item));
     }
 
     return (
@@ -21,7 +23,7 @@ const IngridientsItem = ({ item }) => {
             </div>
             <p className={`${itemStyle.caption} text text_type_main-default mt-2`}>{item.name}</p>
             <Counter count={1} size="default" />
-            {isIngridientDetailsModalOpen && <Modal setState={setIngridientDetailsModal}>
+            {isIngridientDetailsModalOpen && <Modal>
                 <IngridientDetails item={item} />
             </Modal>}
         </li>

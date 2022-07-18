@@ -5,14 +5,15 @@ import OrderDetails from './order-details/order-details';
 import { IngridientsContext } from '../../services/ingridientsContext';
 import { postOrder } from '../../utils/burger-api';
 import Modal from '../modal/modal';
+import { useSelector } from 'react-redux';
 
 const BurgerConstructor = () => {
     const [totalPrice, setTotalPrice] = useState(0);
-    const { ingridientsList } = useContext(IngridientsContext);
+    const ingridientsList = useSelector(store => store.burgerIngridients.ingridients);
     const [isOrderDetailsModalOpen, setOrderDetailsModal] = useState(false);
-    const lockedBun = ingridientsList.ingridients.find((item) => item.type === 'bun');
-    const filling = ingridientsList.ingridients.filter((item) => item.type !== 'bun');
-    const orderId = ingridientsList.ingridients.map(item => item._id);
+    const lockedBun = ingridientsList.find((item) => item.type === 'bun');
+    const filling = ingridientsList.filter((item) => item.type !== 'bun');
+    const orderId = ingridientsList.map(item => item._id);
 
     const [orderData, setOrderData] = useState({
         name: '',
