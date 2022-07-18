@@ -1,27 +1,16 @@
 import constructorStyle from './burger-constructor.module.css';
 import { ConstructorElement, DragIcon, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useContext, useEffect, useState } from 'react';
-import OrderDetails from './order-details/order-details';
-import { IngridientsContext } from '../../services/ingridientsContext';
-import { postOrder } from '../../utils/burger-api';
-import Modal from '../modal/modal';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setOrder } from '../../services/actions/order-details';
 
 const BurgerConstructor = () => {
+    const dispatch = useDispatch();
     const [totalPrice, setTotalPrice] = useState(0);
     const ingridientsList = useSelector(store => store.burgerIngridients.ingridients);
-    const [isOrderDetailsModalOpen, setOrderDetailsModal] = useState(false);
     const lockedBun = ingridientsList.find((item) => item.type === 'bun');
     const filling = ingridientsList.filter((item) => item.type !== 'bun');
     const orderId = ingridientsList.map(item => item._id);
-
-    const [orderData, setOrderData] = useState({
-        name: '',
-        order: {
-            number: null
-        },
-        success: false
-    })
 
     useEffect(() => {
         const total = filling.reduce((sum, item) => sum + item.price, lockedBun ? (lockedBun.price * 2) : 0);
@@ -29,12 +18,7 @@ const BurgerConstructor = () => {
     }, [lockedBun, filling])
 
     const handleOrderDetailssModal = () => {
-        postOrder(orderId)
-            .then(res => {
-                setOrderData(res);
-                setOrderDetailsModal(true);
-            })
-            .catch(err => console.log(err))
+       dispatch(setOrder(orderId));      
     }
 
     return (
@@ -78,9 +62,6 @@ const BurgerConstructor = () => {
                     <CurrencyIcon />
                 </div>
                 <Button type="primary" size="large" onClick={handleOrderDetailssModal}>Оформить заказ</Button>
-               {isOrderDetailsModalOpen && <Modal setState={setOrderDetailsModal}>
-                    <OrderDetails orderData={orderData}/>
-                </Modal>}
             </div>
         </section>
     )

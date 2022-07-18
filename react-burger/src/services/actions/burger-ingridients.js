@@ -11,7 +11,7 @@ export const getIngridients = () => async dispatch => {
         const data = await res.json();
         dispatch({ type: GET_INGRIDIENTS_SUCCESS, payload: data.data })
     }
-    catch(err) {
+    catch {
         dispatch({ type: GET_INGRIDIENTS_FAILED });
     }
 }
