@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 const IngridientsCategory = ({ category }) => {
     const ingridientsList = useSelector(store => store.burgerIngridients.ingridients);
     const items = ingridientsList.filter(item => item.type === category.type);
-
+    
     return (
         <li>
             <p className='text text_type_main-medium mt-10 mb-6'>{category.name}</p>

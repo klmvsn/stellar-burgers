@@ -8,6 +8,8 @@ import IngridientDetails from '../burger-ingridients/ingridient-details/ingridie
 import { useDispatch, useSelector } from 'react-redux';
 import { getIngridients } from '../../services/actions/burger-ingridients';
 import OrderDetails from '../burger-constructor/order-details/order-details';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -27,14 +29,14 @@ const App = () => {
                 {hasError && 'Произошла ошибка'}
                 {!isLoading && !hasError &&
                     ingridients.length && (
-                        <>
+                        <DndProvider backend={HTML5Backend}>
                             <BurgerIngridients />
                             <BurgerConstructor />
-                        </>
+                        </ DndProvider >
                     )}
             </main>
             {isModalOpen && <Modal>
-                {type === 'ingridient' ? <IngridientDetails item={data} /> : <OrderDetails orderData={info}/>}
+                {type === 'ingridient' ? <IngridientDetails item={data} /> : <OrderDetails orderData={info} />}
             </Modal>}
         </div>
     )
