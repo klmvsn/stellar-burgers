@@ -10,6 +10,7 @@ import { getIngridients } from '../../services/actions/burger-ingridients';
 import OrderDetails from '../burger-constructor/order-details/order-details';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { resetModal } from '../../services/actions/modal';
 
 const App = () => {
     const dispatch = useDispatch();
@@ -20,6 +21,10 @@ const App = () => {
     useEffect(() => {
         dispatch(getIngridients());
     }, [dispatch])
+
+    const handleCloseIngridientModal = () => {
+        dispatch(resetModal());
+    }
 
     return (
         <div className={`${styles.app} custom-scroll app-container`}>
@@ -35,7 +40,7 @@ const App = () => {
                         </ DndProvider >
                     )}
             </main>
-            {isModalOpen && <Modal>
+            {isModalOpen && <Modal onClose={handleCloseIngridientModal}>
                 {type === 'ingridient' ? <IngridientDetails item={data} /> : <OrderDetails orderData={info} />}
             </Modal>}
         </div>

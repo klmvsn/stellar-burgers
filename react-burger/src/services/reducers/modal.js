@@ -11,7 +11,7 @@ export const modalReducer = (state = initialState, action) => {
         case SET_MODAL:
             return {...state, isModalOpen: true, data: action.payload, type: action.content};
         case RESET_MODAL:
-            return {...state, isModalOpen: false, data: null};
+            return {...state, isModalOpen: false, data: null, type: ''};
         default:
             return state;
     }
