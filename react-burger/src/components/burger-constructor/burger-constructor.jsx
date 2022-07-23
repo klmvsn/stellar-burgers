@@ -2,7 +2,7 @@ import constructorStyle from './burger-constructor.module.css';
 import { ConstructorElement, CurrencyIcon, Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setOrder } from '../../services/actions/order-details';
+import { renderOrder } from '../../services/actions/order-details';
 import { nanoid } from 'nanoid';
 import { addBun, addFilling } from '../../services/actions/burger-constructor';
 import { useDrop } from 'react-dnd';
@@ -22,7 +22,7 @@ const BurgerConstructor = () => {
     }, [bun, ingridients])
 
     const handleOrderDetailssModal = () => {
-        dispatch(setOrder(orderId));
+        dispatch(renderOrder(orderId));
     }
 
     const [, dropTarget] = useDrop({

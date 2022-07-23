@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import ingridientsStyle from './burger-ingridients.module.css';
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 import IngridientsCategory from "./ingridients-category/ingridients-category";
@@ -54,7 +54,7 @@ const BurgerIngridients = () => {
                     <IngridientsCategory key={'sauces'} category={{ type: 'sauce', name: 'Соусы' }} />
                 </div>
                 <div ref={fillingsRef}>
-                    <IngridientsCategory key={'fillings'} category={{ type: 'fillings', name: 'Начинки' }} />
+                    <IngridientsCategory key={'fillings'} category={{ type: 'main', name: 'Начинки' }} />
                 </div>
             </ul>
         </section>

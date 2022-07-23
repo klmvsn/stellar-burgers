@@ -6,7 +6,7 @@ import BurgerConstructor from '../burger-constructor/burger-constructor';
 import Modal from '../modal/modal';
 import IngridientDetails from '../burger-ingridients/ingridient-details/ingridient-details';
 import { useDispatch, useSelector } from 'react-redux';
-import { getIngridients } from '../../services/actions/burger-ingridients';
+import { renderIngridients } from '../../services/actions/burger-ingridients';
 import OrderDetails from '../burger-constructor/order-details/order-details';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -19,7 +19,7 @@ const App = () => {
     const info = useSelector(store => store.order.info);
 
     useEffect(() => {
-        dispatch(getIngridients());
+        dispatch(renderIngridients());
     }, [dispatch])
 
     const handleCloseIngridientModal = () => {
