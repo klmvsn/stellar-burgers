@@ -4,12 +4,12 @@ const checkResponse = (res) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 }
 
-export const getIngridients = () => {
+export const getIngridientsData = async () => {
     return fetch(`${BASE_URL}/ingredients`)
         .then(checkResponse);
 }
 
-export const postOrder = (orderId) => {
+export const postOrder = async (orderId) => {
     return fetch(`${BASE_URL}/orders`, {
         method: 'POST',
         headers: {

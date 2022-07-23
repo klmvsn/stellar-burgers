@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ReactDOM from "react-dom";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -7,10 +7,10 @@ import PropTypes from 'prop-types';
 
 const modalRoot = document.querySelector('#modal');
 
-const Modal = ({ setState, children }) => {
+const Modal = ({ onClose, children }) => {
     const closeModal = (e) => {
         e.stopPropagation();
-        setState(false);
+        onClose();
     }
 
     useEffect(() => {
@@ -39,7 +39,6 @@ const Modal = ({ setState, children }) => {
 }
 
 Modal.propTypes = {
-    setState: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired
 }
 
