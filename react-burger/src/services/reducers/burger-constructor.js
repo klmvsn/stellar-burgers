@@ -1,4 +1,4 @@
-import { ADD_BUNS, ADD_FILLING, REMOVE_FILLING, SWAP_FILLING } from "../actions/burger-constructor";
+import { ADD_BUNS, ADD_FILLING, REMOVE_FILLING, RESET_CONSTRUCTOR, SWAP_FILLING } from "../actions/burger-constructor";
 
 const initialState = {
     bun: [],
@@ -23,6 +23,8 @@ export const constructorReducer = (state = initialState, action) => {
                     ingridients: newState
                 };
             }
+        case RESET_CONSTRUCTOR:
+            return initialState;
         default:
             return state;
     }

@@ -12,6 +12,7 @@ const BurgerConstructor = () => {
     const dispatch = useDispatch();
     const { bun, ingridients } = useSelector(store => store.burgerConstructor);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [isLoading, setLoading] = useState(false);
     const orderId = useMemo(
         () => ingridients.map(item => item._id), [ingridients]
     )
@@ -22,7 +23,7 @@ const BurgerConstructor = () => {
     }, [bun, ingridients])
 
     const handleOrderDetailssModal = () => {
-        dispatch(renderOrder(orderId));
+        dispatch(renderOrder(orderId, setLoading));
     }
 
     const [, dropTarget] = useDrop({
@@ -53,7 +54,7 @@ const BurgerConstructor = () => {
                     <ul className={`${constructorStyle.list} custom-scroll`}>
                         {ingridients.map((item, index) => {
                             return (
-                                <DraggableIngridients item={item} index={index} key={item.uniqueId}/>
+                                <DraggableIngridients item={item} index={index} key={item.uniqueId} />
                             )
                         }
                         )}
@@ -73,8 +74,10 @@ const BurgerConstructor = () => {
                     <p className="text text_type_digits-medium mr-2">{totalPrice}</p>
                     <CurrencyIcon />
                 </div>
-                {totalPrice === 0 ? '' : <Button type="primary" size="large"
-                    onClick={handleOrderDetailssModal}>Оформить заказ</Button>}
+                {bun.length === 0 || ingridients.length === 0 ? <Button type="primary" size="large" disabled>Оформить заказ</Button> :
+                    <Button type="primary" size="large" onClick={handleOrderDetailssModal}>
+                        { isLoading ? 'Подождите...':'Оформить заказ'}
+                    </Button>}
             </div>
         </section>
     )
