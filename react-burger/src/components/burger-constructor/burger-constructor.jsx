@@ -26,12 +26,17 @@ const BurgerConstructor = () => {
         dispatch(renderOrder(orderId, setLoading));
     }
 
-    const [, dropTarget] = useDrop({
+    const [{ isHover }, dropTarget] = useDrop({
         accept: 'ingridient',
         drop(item) {
             onDropHandler(item);
-        }
-    })
+        },
+        collect: monitor => ({
+            isHover: monitor.isOver(),
+        })
+    });
+
+    const dropContainerBorderColor = isHover ? '2px solid #4C4CFF' : 'transparent';
 
     const onDropHandler = (item) => {
         const uniqueId = nanoid();
@@ -40,8 +45,8 @@ const BurgerConstructor = () => {
 
     return (
         <section className={`${constructorStyle.section} ml-10 mt-20`}>
-            <div className={constructorStyle.constructor_container} ref={dropTarget}>
-                {bun.length === 0 ? <p className="text text_type_main-default">Выберите булку</p> :
+            <div className={constructorStyle.constructor_container} ref={dropTarget} style={{border: dropContainerBorderColor}}>
+                {bun.length === 0 ? <p className="text text_type_main-default">Перетащите булку сюда</p> :
                     <ConstructorElement
                         type="top"
                         isLocked={true}
@@ -50,17 +55,17 @@ const BurgerConstructor = () => {
                         thumbnail={bun.image}
                     />}
 
-                {ingridients.length === 0 ? <p className="text text_type_main-default">Выберите начинку</p> :
+                {ingridients.length === 0 ? <p className="text text_type_main-default">Перетащите начинку сюда</p> :
                     <ul className={`${constructorStyle.list} custom-scroll`}>
                         {ingridients.map((item, index) => {
                             return (
-                                <DraggableIngridients item={item} index={index} key={item.uniqueId} />
+                                <DraggableIngridients item={item} index={index} key={item.uniqueId} style={{ boxShadow: dropContainerBorderColor }} />
                             )
                         }
                         )}
                     </ul>}
 
-                {bun.length === 0 ? <p className="text text_type_main-default">Выберите булку</p> :
+                {bun.length === 0 ? <p className="text text_type_main-default">Перетащите булку сюда</p> :
                     <ConstructorElement
                         type="bottom"
                         isLocked={true}
@@ -74,9 +79,9 @@ const BurgerConstructor = () => {
                     <p className="text text_type_digits-medium mr-2">{totalPrice}</p>
                     <CurrencyIcon />
                 </div>
-                {bun.length === 0 || ingridients.length === 0 ? <Button type="primary" size="large" disabled>Оформить заказ</Button> :
+                {bun.length === 0 || ingridients.length === 0 || isLoading ? <Button type="primary" size="large" disabled>Оформить заказ</Button> :
                     <Button type="primary" size="large" onClick={handleOrderDetailssModal}>
-                        { isLoading ? 'Подождите...':'Оформить заказ'}
+                        {isLoading ? 'Подождите...' : 'Оформить заказ'}
                     </Button>}
             </div>
         </section>
