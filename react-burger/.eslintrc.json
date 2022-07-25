@@ -1,0 +1,16 @@
+{
+    "rules": {
+        "no-undef": "off",
+        "no-param-reassign": [
+            "error",
+            {
+                "props": true,
+                "ignorePropertyModificationsFor": [
+                    "state"
+                ]
+            }
+        ]
+    },
+    "extends": "standard",
+    "parser": "babel-eslint"
+}
