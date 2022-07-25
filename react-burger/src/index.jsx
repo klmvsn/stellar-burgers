@@ -8,10 +8,11 @@ import { compose, legacy_createStore as createStore, applyMiddleware } from 'red
 import thunk from 'redux-thunk';
 import { rootReducer } from './services';
 import { Provider } from 'react-redux';
+import { store } from './services/store';
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const enhancer = composeEnhancers(applyMiddleware(thunk));
-const store = createStore(rootReducer, enhancer);
+
+
+
 
 const root = document.getElementById('root')
 
