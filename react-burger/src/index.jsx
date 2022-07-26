@@ -4,15 +4,8 @@ import './index.css';
 import App from './components/app/app.jsx';
 import './vendor/normalize.css';
 import reportWebVitals from './reportWebVitals';
-import { compose, legacy_createStore as createStore, applyMiddleware } from 'redux';
-import thunk from 'redux-thunk';
-import { rootReducer } from './services';
 import { Provider } from 'react-redux';
 import { store } from './services/store';
-
-
-
-
 
 const root = document.getElementById('root')
 

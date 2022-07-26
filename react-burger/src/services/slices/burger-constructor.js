@@ -7,15 +7,18 @@ export const burgerConstructorSlice = createSlice({
         ingridients: []
     },
     reducers: {
-        addBuns: (state, action) => {state.bun = action.payload},
-        addFilling: (state, action) => {state.ingridients.push(action.payload)},
-        removeFilling: (state, action) => {state.ingridients.filter(item => item.uniqueId !== action.payload)},
+        addBun: (state, action) => { state.bun = action.payload },
+        addFilling: (state, action) => { state.ingridients.push(action.payload) },
+        removeFilling: (state, action) => { return { ...state, ingridients: [...state.ingridients].filter(item => item.uniqueId !== action.payload) } },
         swapFilling: (state, action) => {
-            state.ingridients = state.ingridients.splice(action.payload.dragIndex, 1, 
-                state.ingridients.splice(action.payload.hoverIndex, 1, action.payload.item)[0])
+            state.ingridients.splice(action.payload.toIndex, 0, ...state.ingridients.splice(action.payload.fromIndex, 1))
+        },
+        resetConstructor: state => {
+            state.bun = [];
+            state.ingridients = [];
         }
     }
 })
 
-export const {addBuns, addFilling, removeFilling, swapFilling} = burgerConstructorSlice.actions;
+export const { addBun, addFilling, removeFilling, swapFilling, resetConstructor } = burgerConstructorSlice.actions;
 export default burgerConstructorSlice.reducer

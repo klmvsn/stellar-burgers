@@ -10,13 +10,13 @@ import { renderIngridients } from '../../services/actions/burger-ingridients';
 import OrderDetails from '../burger-constructor/order-details/order-details';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { resetModal } from '../../services/actions/modal';
+import { resetModal } from '../../services/slices/modal';
 
 const App = () => {
     const dispatch = useDispatch();
     const { ingridients, isLoading, hasError } = useSelector(store => store.burgerIngridients);
     const { isModalOpen, data, type } = useSelector(store => store.modal);
-    const info = useSelector(store => store.order.info);
+    const info = useSelector(store => store.orderDetails.info);
 
     useEffect(() => {
         dispatch(renderIngridients());
