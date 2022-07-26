@@ -19,7 +19,7 @@ const IngridientsItem = ({ item }) => {
             count = (bun._id === item._id && bun) ? 2 : 
             ingridients.filter(ingridient => ingridient._id === item._id).length
             return count
-        }, [bun, ingridients]
+        }, [bun, ingridients, item._id]
     )
 
     const [, dragRef] = useDrag({
