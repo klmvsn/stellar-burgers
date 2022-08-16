@@ -4,3 +4,6 @@
 
 # Используемые технологии
 React, Redux, React-dnd
+
+# Ссылка на gh-pages
+https://klmvsn.github.io/stellar-burgers/ 
