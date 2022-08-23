@@ -22,7 +22,7 @@ const App = () => {
     const dispatch = useDispatch();
     const { ingridients, isLoading, hasError } = useSelector(store => store.burgerIngridients);
     const { isModalOpen, data, type } = useSelector(store => store.modal);
-    const info = useSelector(store => store.order.info);
+    const info = useSelector(store => store.orderDetails.info);
 
     useEffect(() => {
         dispatch(renderIngridients());

@@ -2,16 +2,16 @@ import itemStyle from './ingridients-item.module.css';
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { itemTypes } from '../../../utils/types';
 import { useDispatch, useSelector } from 'react-redux';
-import { SET_MODAL } from '../../../services/actions/modal';
 import { useDrag } from 'react-dnd';
 import { useMemo } from 'react';
+import { setModal } from '../../../services/slices/modal';
 
 const IngridientsItem = ({ item }) => {
     const { bun, ingridients } = useSelector(store => store.burgerConstructor);
     const dispatch = useDispatch();
 
     const handleIngridientDetailsModal = () => {
-        dispatch({ type: SET_MODAL, payload: item, content: 'ingridient' });
+        dispatch(setModal({item, content: 'ingridient'}));
     }
 
     const counter = useMemo(
@@ -19,7 +19,7 @@ const IngridientsItem = ({ item }) => {
             count = (bun._id === item._id && bun) ? 2 : 
             ingridients.filter(ingridient => ingridient._id === item._id).length
             return count
-        }, [bun, ingridients]
+        }, [bun, ingridients, item._id]
     )
 
     const [, dragRef] = useDrag({

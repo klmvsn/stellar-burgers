@@ -4,9 +4,9 @@ import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { renderOrder } from '../../services/actions/order-details';
 import { nanoid } from 'nanoid';
-import { addBun, addFilling } from '../../services/actions/burger-constructor';
 import { useDrop } from 'react-dnd';
 import DraggableIngridients from './draggable-ingridients/draggable-ingridients';
+import { addBun, addFilling } from '../../services/slices/burger-constructor';
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
@@ -40,7 +40,7 @@ const BurgerConstructor = () => {
 
     const onDropHandler = (item) => {
         const uniqueId = nanoid();
-        item.type != 'bun' ? dispatch(addFilling(item, uniqueId)) : dispatch(addBun(item, uniqueId));
+        item.type !== 'bun' ? dispatch(addFilling({...item, uniqueId})) : dispatch(addBun({...item, uniqueId}));
     }
 
     return (
