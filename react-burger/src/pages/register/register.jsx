@@ -2,6 +2,7 @@ import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burg
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { Link, Redirect } from 'react-router-dom';
+import { useForm } from "../../hooks/useForm";
 import { registerUserAction } from "../../services/actions/auth";
 import { setFormValue } from "../../services/slices/auth";
 import { getCookie } from "../../utils/cookie";
@@ -9,7 +10,8 @@ import styles from '../common.module.css';
 
 const RegisterPage = () => {
     const dispatch = useDispatch();
-    const { email, password, name } = useSelector(store => store.auth.form);
+    const {values, handleChange } = useForm({});
+    const { email, password, name } = values;
     const {isLoading} = useSelector(store => store.auth);
     const cookie = getCookie('token');
 
@@ -18,22 +20,18 @@ const RegisterPage = () => {
         dispatch(registerUserAction(email, password, name));
     }
 
-    const onChange = (e) => {
-        dispatch(setFormValue({ field: e.target.name, value: e.target.value }));
-    }
-
     return (cookie) ? (<Redirect to='/'/>) : (
         <section className={styles.container}>
             <h2 className='text text_type_main-medium mb-6'>Регистрация</h2>
             <form className={styles.form} onSubmit={onSubmit}>
                 <div className={`${styles.input} mb-6`}>
-                    <Input type='text' value={name} onChange={onChange} name='name' placeholder='Имя' />
+                    <Input type='text' value={name || ''} onChange={handleChange} name='name' placeholder='Имя' />
                 </div>
                 <div className={`${styles.input} mb-6`}>
-                    <Input type='email' value={email} name='email' onChange={onChange} placeholder='E-mail' />
+                    <Input type='email' value={email || ''} name='email' onChange={handleChange} placeholder='E-mail' />
                 </div>
                 <div className={`${styles.input} mb-6`}>
-                    <PasswordInput value={password} name='password' onChange={onChange} />
+                    <PasswordInput value={password || ''} name='password' onChange={handleChange} />
                 </div>
                 {isLoading ? <Button type='primary' size='medium' disabled>Подождите</Button> :
                  <Button type='primary' size='medium'>Зарегестрироваться</Button>}

@@ -42,7 +42,7 @@ const App = () => {
     }, [dispatch])
 
     useEffect(() => {
-        if (isTokenExpired || (cookie && token)) {
+        if (isTokenExpired) {
             dispatch(updateTokenAction());
         }
         if (cookie && token) {
@@ -97,7 +97,7 @@ const App = () => {
                     <NotFound />
                 </Route>
             </Switch>
-            {isModalOpen && background &&
+            {background &&
                 <Route path="/ingredients/:id">
                     <Modal onClose={handleCloseModal}>
                         <IngridientDetails />
