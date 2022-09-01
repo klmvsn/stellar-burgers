@@ -11,7 +11,7 @@ import OrderDetails from '../burger-constructor/order-details/order-details';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { resetModal } from '../../services/slices/modal';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import LoginPage from '../../pages/login/login';
 import RegisterPage from '../../pages/register/register';
 import ForgotPasswordPage from '../../pages/forgot-password/forgot-password';
@@ -26,32 +26,39 @@ import Feed from '../../pages/feed/feed';
 const App = () => {
     const dispatch = useDispatch();
     const { ingridients, isLoading, hasError } = useSelector(store => store.burgerIngridients);
-    const { isModalOpen, data, type } = useSelector(store => store.modal);
+    const { isModalOpen, type } = useSelector(store => store.modal);
     const info = useSelector(store => store.orderDetails.info);
 
     const token = localStorage.getItem('refreshToken');
     const cookie = getCookie('token');
+    const isTokenExpired = localStorage.getItem('isTokenExpired')
+
+    const location = useLocation();
+    const background = location.state?.background;
+    const history = useHistory();
 
     useEffect(() => {
         dispatch(renderIngridients());
     }, [dispatch])
 
     useEffect(() => {
+        if (isTokenExpired) {
+            dispatch(updateTokenAction())
+        }
         if (cookie && token) {
             dispatch(getUserAction());
         }
-    }, [dispatch, token, cookie]);
+    }, [dispatch, token, cookie, isTokenExpired]);
 
     const handleCloseIngridientModal = () => {
         dispatch(resetModal());
+        history.replace('/');
     }
-
-    console.log(cookie, token);
 
     return (
         <div className={`${styles.app} custom-scroll app-container`}>
             <AppHeader />
-            <Switch>
+            <Switch location={background || location}>
                 <Route path='/login' exact>
                     <LoginPage />
                 </Route>
@@ -64,9 +71,12 @@ const App = () => {
                 <Route path='/reset-password' exact>
                     <ResetPasswordPage />
                 </Route>
-                <ProtectedRoute path='/profile' exact>
+                <ProtectedRoute path='/profile'>
                     <ProfilePage />
                 </ProtectedRoute>
+                <Route path='/ingredients/:id' exact>
+                    <IngridientDetails />
+                </Route>
                 <Route path='/feed' exact>
                     <Feed />
                 </Route>
@@ -87,9 +97,12 @@ const App = () => {
                     <NotFound />
                 </Route>
             </Switch>
-            {isModalOpen && <Modal onClose={handleCloseIngridientModal}>
-                {type === 'ingridient' ? <IngridientDetails item={data} /> : <OrderDetails orderData={info} />}
-            </Modal>}
+            {isModalOpen && background &&
+                <Route path="/ingredients/:id">
+                    <Modal onClose={handleCloseIngridientModal}>
+                        {type === 'ingridient' ? <IngridientDetails /> : <OrderDetails orderData={info} />}
+                    </Modal>
+                </Route>}
         </div>
     )
 }

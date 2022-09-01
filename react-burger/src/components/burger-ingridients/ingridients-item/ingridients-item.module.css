@@ -1,6 +1,5 @@
 .item {
-    max-width: 284px;
-    width: 100%;
+    width: 284px;
     display: flex;
     flex-direction: column;
     position: relative;
@@ -15,4 +14,9 @@
 
 .caption {
     text-align: center;
+}
+
+.link {
+    text-decoration: none;
+    color: inherit;
 }

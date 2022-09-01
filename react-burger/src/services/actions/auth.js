@@ -47,15 +47,7 @@ export const getUserAction = () => (dispatch) => {
     dispatch(getUserRequest());
     getUser()
         .then(res => dispatch(getUserSuccess(res)))
-        .catch(() => {
-            const token = localStorage.getItem('refreshToken');
-            if(token){
-                dispatch(updateTokenAction())
-            }
-            else {
-                dispatch(getUserFailed())
-            }
-        })
+        .catch((err) => dispatch(getUserFailed(err)))
 }
 
 export const updateTokenAction = () => (dispatch) => {
@@ -69,5 +61,5 @@ export const updateUserAction = (name, email, password) => (dispatch) => {
     dispatch(updateUserRequest());
     updateUser(name, email, password)
         .then(res => dispatch(updateUserSuccess(res)))
-        .catch(() => dispatch(updateUserFailed()))
+        .catch((err) => dispatch(updateUserFailed(err)))
 }

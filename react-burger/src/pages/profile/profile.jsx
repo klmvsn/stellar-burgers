@@ -9,6 +9,7 @@ import styles from './profile.module.css';
 
 const ProfilePage = () => {
     const dispatch = useDispatch();
+   
     const { email, name } = useSelector(store => store.auth.user);
     const { isLoading } = useSelector(store => store.auth);
 
@@ -88,9 +89,11 @@ const ProfilePage = () => {
                         <div className={`${styles.input} mb-6`}>
                             <Input placeholder='Пароль' icon='EditIcon' value={data.password} name='password' onChange={onChange} />
                         </div>
-                        <Button type='secondary' size='medium' onClick={handleReset}>Отмена</Button>
-                        {!isLoading ? <Button type='primary' size='medium'>Сохранить</Button> :
-                            <Button type='primary' size='medium' disabled>Сохранение</Button>}
+                        <div>
+                            <Button type='secondary' size='medium' onClick={handleReset}>Отмена</Button>
+                            {!isLoading ? <Button type='primary' size='medium'>Сохранить</Button> :
+                                <Button type='primary' size='medium' disabled>Сохранение</Button>}
+                        </div>
                     </form>
                 </Route>
             </Switch>
