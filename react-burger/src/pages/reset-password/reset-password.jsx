@@ -1,19 +1,44 @@
-import { Button, Input, PasswordInput} from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from 'react-router-dom';
+import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { Link, Redirect } from 'react-router-dom';
 import styles from '../common.module.css';
+import { setFormValue } from "../../services/slices/auth";
+import { resetPasswordAction } from "../../services/actions/auth";
+import { getCookie } from "../../utils/cookie";
 
 const ResetPasswordPage = () => {
-    return (
+    const dispatch = useDispatch();
+    const { code, resetPassword } = useSelector(store => store.auth.form);
+    const {isLoading, resetSuccess, forgetSuccess} = useSelector(store => store.auth);
+    const cookie = getCookie('token');
+
+    const onSubmit = e => {
+        e.preventDefault();
+        dispatch(resetPasswordAction(resetPassword, code));
+    }
+    const onChange = (e) => {
+        dispatch(setFormValue({ field: e.target.name, value: e.target.value }));
+    }
+
+    if(!forgetSuccess) {
+        return <Redirect to='/forgot-password'/>
+    }
+
+    return (cookie) ? (<Redirect to='/'/>) : (
         <section className={styles.container}>
             <h2 className='text text_type_main-medium mb-6'>Восстановление пароля</h2>
-            <form className={styles.form}>
+            <form className={styles.form} onSubmit={onSubmit}>
                 <div className={`${styles.input} mb-6`}>
-                    <PasswordInput value={''} onChange={''} name='new-password' placeholder={'Введите новый пароль'}/>
+                    <PasswordInput value={resetPassword} onChange={onChange} name='resetPassword' placeholder={'Введите новый пароль'} />
                 </div>
                 <div className={`${styles.input} mb-6`}>
-                    <Input value={''} onChange={''} placeholder='Введите код из письма' />
+                    <Input value={code} onChange={onChange} name='code' placeholder='Введите код из письма' />
                 </div>
-                <Button type='primary' size='medium'>Сохранить</Button>
+                {!isLoading ? <Button type='primary' size='medium'>
+                    {!!resetSuccess ? (<Redirect to='/profile' />) : ''}
+                    Сохранить
+                    </Button> : <Button type='primary' size='medium' disabled>Сохранение</Button>}
             </form>
             <p className='text text_type_main-default text_color_inactive mb-4 mt-20'>
                 Вспомнили пароль?

@@ -1,20 +1,38 @@
-import { Button, EmailInput, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Link } from 'react-router-dom';
+import { Button, Input, PasswordInput } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { Link, Redirect } from 'react-router-dom';
+import { registerUserAction } from "../../services/actions/auth";
+import { setFormValue } from "../../services/slices/auth";
+import { getCookie } from "../../utils/cookie";
 import styles from '../common.module.css';
 
 const RegisterPage = () => {
-    return (
+    const dispatch = useDispatch();
+    const { email, password, name } = useSelector(store => store.auth.form);
+    const cookie = getCookie('token');
+
+    const onSubmit = e => {
+        e.preventDefault();
+        dispatch(registerUserAction(email, password, name));
+    }
+
+    const onChange = (e) => {
+        dispatch(setFormValue({ field: e.target.name, value: e.target.value }));
+    }
+
+    return (cookie) ? (<Redirect to='/'/>) : (
         <section className={styles.container}>
             <h2 className='text text_type_main-medium mb-6'>Регистрация</h2>
-            <form className={styles.form}>
+            <form className={styles.form} onSubmit={onSubmit}>
                 <div className={`${styles.input} mb-6`}>
-                    <Input value={''} onChange={''} placeholder='Имя'/>
+                    <Input type='text' value={name} onChange={onChange} name='name' placeholder='Имя' />
                 </div>
                 <div className={`${styles.input} mb-6`}>
-                    <EmailInput value={''} name='email' onChange={''} />
+                    <Input type='email' value={email} name='email' onChange={onChange} placeholder='E-mail' />
                 </div>
                 <div className={`${styles.input} mb-6`}>
-                    <PasswordInput value={''} name='password' onChange={''} />
+                    <PasswordInput value={password} name='password' onChange={onChange} />
                 </div>
                 <Button type='primary' size='medium'>Зарегестрироваться</Button>
             </form>

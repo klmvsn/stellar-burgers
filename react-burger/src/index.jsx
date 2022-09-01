@@ -6,14 +6,17 @@ import './vendor/normalize.css';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import { store } from './services/store';
+import { BrowserRouter as Router } from 'react-router-dom'
 
 const root = document.getElementById('root')
 
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <Router>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </Router>
   </React.StrictMode>, root
 );
 
