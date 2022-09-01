@@ -1,8 +1,27 @@
 import ingridientDetailsStyles from './ingridient-details.module.css';
-import { itemTypes } from "../../../utils/types";
 import IngridientInfo from "./ingridient-info/ingridient-info";
+import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useEffect } from 'react';
 
-const IngridientDetails = ({ item }) => {
+const IngridientDetails = () => {
+    const { id } = useParams();
+    const ingridients = useSelector(store => store.burgerIngridients.ingridients);
+    const item = ingridients?.find(item => item._id === id);
+
+    const history = useHistory();
+    const location = useLocation();
+
+
+    useEffect(() => {
+        if (history.action === "POP")
+            history.replace({ pathname: location.pathname });
+    }, [location.pathname, history]);
+
+    if (!item) {
+        return null;
+    }
+
     return (
         <>
             <h1 className={`text text_type_main-large pt-10 pr-10 pl-10 ${ingridientDetailsStyles.heading}`}>Детали ингридиента</h1>
@@ -17,11 +36,8 @@ const IngridientDetails = ({ item }) => {
                 </ul>
             </div>
         </>
-    );
-}
 
-IngridientDetails.propTypes = {
-    item: itemTypes
+    );
 }
 
 export default IngridientDetails;

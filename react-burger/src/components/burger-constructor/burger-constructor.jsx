@@ -4,12 +4,16 @@ import { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { renderOrder } from '../../services/actions/order-details';
 import { nanoid } from 'nanoid';
-import { addBun, addFilling } from '../../services/actions/burger-constructor';
 import { useDrop } from 'react-dnd';
 import DraggableIngridients from './draggable-ingridients/draggable-ingridients';
+import { addBun, addFilling } from '../../services/slices/burger-constructor';
+import { getCookie } from '../../utils/cookie';
+import { useHistory } from 'react-router-dom';
 
 const BurgerConstructor = () => {
     const dispatch = useDispatch();
+    const cookie = getCookie('token');
+    const history = useHistory();
     const { bun, ingridients } = useSelector(store => store.burgerConstructor);
     const [totalPrice, setTotalPrice] = useState(0);
     const [isLoading, setLoading] = useState(false);
@@ -23,7 +27,8 @@ const BurgerConstructor = () => {
     }, [bun, ingridients])
 
     const handleOrderDetailssModal = () => {
-        dispatch(renderOrder(orderId, setLoading));
+        cookie && dispatch(renderOrder(orderId, setLoading));
+        !cookie && history.push('/login');
     }
 
     const [{ isHover }, dropTarget] = useDrop({
@@ -40,12 +45,12 @@ const BurgerConstructor = () => {
 
     const onDropHandler = (item) => {
         const uniqueId = nanoid();
-        item.type != 'bun' ? dispatch(addFilling(item, uniqueId)) : dispatch(addBun(item, uniqueId));
+        item.type !== 'bun' ? dispatch(addFilling({ ...item, uniqueId })) : dispatch(addBun({ ...item, uniqueId }));
     }
 
     return (
         <section className={`${constructorStyle.section} ml-10 mt-20`}>
-            <div className={constructorStyle.constructor_container} ref={dropTarget} style={{border: dropContainerBorderColor}}>
+            <div className={constructorStyle.constructor_container} ref={dropTarget} style={{ border: dropContainerBorderColor }}>
                 {bun.length === 0 ? <p className="text text_type_main-default">Перетащите булку сюда</p> :
                     <ConstructorElement
                         type="top"

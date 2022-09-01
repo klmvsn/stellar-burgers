@@ -10,39 +10,105 @@ import { renderIngridients } from '../../services/actions/burger-ingridients';
 import OrderDetails from '../burger-constructor/order-details/order-details';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { resetModal } from '../../services/actions/modal';
+import { resetModal } from '../../services/slices/modal';
+import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
+import LoginPage from '../../pages/login/login';
+import RegisterPage from '../../pages/register/register';
+import ForgotPasswordPage from '../../pages/forgot-password/forgot-password';
+import ResetPasswordPage from '../../pages/reset-password/reset-password';
+import ProfilePage from '../../pages/profile/profile';
+import ProtectedRoute from '../protected-route/protected-route';
+import { getUserAction, updateTokenAction } from '../../services/actions/auth';
+import { getCookie } from '../../utils/cookie';
+import NotFound from '../../pages/not-found/not-found';
+import Feed from '../../pages/feed/feed';
 
 const App = () => {
     const dispatch = useDispatch();
     const { ingridients, isLoading, hasError } = useSelector(store => store.burgerIngridients);
-    const { isModalOpen, data, type } = useSelector(store => store.modal);
-    const info = useSelector(store => store.order.info);
+    const { isModalOpen, type } = useSelector(store => store.modal);
+    const info = useSelector(store => store.orderDetails.info);
+
+    const token = localStorage.getItem('refreshToken');
+    const cookie = getCookie('token');
+    const isTokenExpired = localStorage.getItem('isTokenExpired')
+
+    const location = useLocation();
+    const background = location.state?.background;
+    const history = useHistory();
 
     useEffect(() => {
         dispatch(renderIngridients());
     }, [dispatch])
 
-    const handleCloseIngridientModal = () => {
+    useEffect(() => {
+        if (isTokenExpired) {
+            dispatch(updateTokenAction());
+        }
+        if (cookie && token) {
+            dispatch(getUserAction());
+        }
+    }, [dispatch, cookie, token, isTokenExpired]);
+
+    const handleCloseModal = () => {
         dispatch(resetModal());
+        history.replace('/');
     }
 
     return (
         <div className={`${styles.app} custom-scroll app-container`}>
             <AppHeader />
-            <main className={styles.content}>
-                {isLoading && 'Загрузка...'}
-                {hasError && 'Произошла ошибка'}
-                {!isLoading && !hasError &&
-                    ingridients.length && (
-                        <DndProvider backend={HTML5Backend}>
-                            <BurgerIngridients />
-                            <BurgerConstructor />
-                        </ DndProvider >
-                    )}
-            </main>
-            {isModalOpen && <Modal onClose={handleCloseIngridientModal}>
-                {type === 'ingridient' ? <IngridientDetails item={data} /> : <OrderDetails orderData={info} />}
-            </Modal>}
+            <Switch location={background || location}>
+                <Route path='/login' exact>
+                    <LoginPage />
+                </Route>
+                <Route path='/register' exact>
+                    <RegisterPage />
+                </Route>
+                <Route path='/forgot-password' exact>
+                    <ForgotPasswordPage />
+                </Route>
+                <Route path='/reset-password' exact>
+                    <ResetPasswordPage />
+                </Route>
+                <ProtectedRoute path='/profile'>
+                    <ProfilePage />
+                </ProtectedRoute>
+                <Route path='/ingredients/:id' exact>
+                    <IngridientDetails />
+                </Route>
+                <Route path='/feed' exact>
+                    <Feed />
+                </Route>
+                <Route path='/' exact>
+                    <main className={styles.content}>
+                        {isLoading && 'Загрузка...'}
+                        {hasError && 'Произошла ошибка'}
+                        {!isLoading && !hasError &&
+                            ingridients.length && (
+                                <DndProvider backend={HTML5Backend}>
+                                    <BurgerIngridients />
+                                    <BurgerConstructor />
+                                </ DndProvider >
+                            )}
+                    </main>
+                </Route>
+                <Route>
+                    <NotFound />
+                </Route>
+            </Switch>
+            {background &&
+                <Route path="/ingredients/:id">
+                    <Modal onClose={handleCloseModal}>
+                        <IngridientDetails />
+                    </Modal>
+                </Route>
+            }
+            {isModalOpen && (type !== 'ingridient') &&
+                <Modal onClose={handleCloseModal}>
+                    <OrderDetails orderData={info} />
+                </Modal>
+            }
         </div>
     )
 }
