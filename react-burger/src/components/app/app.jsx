@@ -42,15 +42,15 @@ const App = () => {
     }, [dispatch])
 
     useEffect(() => {
-        if (isTokenExpired) {
-            dispatch(updateTokenAction())
+        if (isTokenExpired || (cookie && token)) {
+            dispatch(updateTokenAction());
         }
         if (cookie && token) {
             dispatch(getUserAction());
         }
-    }, [dispatch, token, cookie, isTokenExpired]);
+    }, [dispatch, cookie, token, isTokenExpired]);
 
-    const handleCloseIngridientModal = () => {
+    const handleCloseModal = () => {
         dispatch(resetModal());
         history.replace('/');
     }
@@ -99,10 +99,16 @@ const App = () => {
             </Switch>
             {isModalOpen && background &&
                 <Route path="/ingredients/:id">
-                    <Modal onClose={handleCloseIngridientModal}>
-                        {type === 'ingridient' ? <IngridientDetails /> : <OrderDetails orderData={info} />}
+                    <Modal onClose={handleCloseModal}>
+                        <IngridientDetails />
                     </Modal>
-                </Route>}
+                </Route>
+            }
+            {isModalOpen && (type !== 'ingridient') &&
+                <Modal onClose={handleCloseModal}>
+                    <OrderDetails orderData={info} />
+                </Modal>
+            }
         </div>
     )
 }

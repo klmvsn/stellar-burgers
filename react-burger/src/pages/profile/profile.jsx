@@ -9,7 +9,7 @@ import styles from './profile.module.css';
 
 const ProfilePage = () => {
     const dispatch = useDispatch();
-   
+
     const { email, name } = useSelector(store => store.auth.user);
     const { isLoading } = useSelector(store => store.auth);
 
@@ -79,7 +79,8 @@ const ProfilePage = () => {
                     <OrderHistory />
                 </Route>
                 <Route path='/profile' exact>
-                    <form className={styles.form} onSubmit={onSubmit}>
+                    {isLoading && 'Загрузка...'}
+                    {!isLoading && <form className={styles.form} onSubmit={onSubmit}>
                         <div className={`${styles.input} mb-6`}>
                             <Input type='text' placeholder='Имя' icon='EditIcon' value={data.name} name='name' onChange={onChange} />
                         </div>
@@ -94,7 +95,7 @@ const ProfilePage = () => {
                             {!isLoading ? <Button type='primary' size='medium'>Сохранить</Button> :
                                 <Button type='primary' size='medium' disabled>Сохранение</Button>}
                         </div>
-                    </form>
+                    </form>}
                 </Route>
             </Switch>
         </section>

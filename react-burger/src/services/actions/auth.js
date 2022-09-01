@@ -12,35 +12,35 @@ export const registerUserAction = (email, password, name) => (dispatch) => {
     dispatch(registerUserRequest());
     registerUser(email, password, name)
         .then(res => dispatch(registerUserSuccess(res)))
-        .catch(registerUserFailed());
+        .catch(() => dispatch(registerUserFailed()));
 }
 
 export const forgotPasswordAction = (email) => (dispatch) => {
     dispatch(forgotPasswordRequest());
     forgotPassword(email)
         .then(res => dispatch(forgotPasswordSuccess(res)))
-        .catch(forgotPasswordFailed())
+        .catch(() => dispatch(forgotPasswordFailed()))
 }
 
 export const resetPasswordAction = (password, code) => (dispatch) => {
     dispatch(resetPasswordRequest());
     resetPassword(password, code)
         .then(res => dispatch(resetPasswordSuccess(res)))
-        .catch(resetPasswordFailed())
+        .catch(() => dispatch(resetPasswordFailed()))
 }
 
 export const signInAction = (email, password) => (dispatch) => {
     dispatch(signInRequest());
     signIn(email, password)
         .then(res => dispatch(signInSuccess(res)))
-        .catch(signInFailed())
+        .catch(() => dispatch(signInFailed()))
 }
 
 export const signOutAction = () => (dispatch) => {
     dispatch(signOutRequest());
     signOut()
         .then(res => dispatch(signOutSuccess(res)))
-        .catch(signOutFailed())
+        .catch(() => dispatch(signOutFailed()))
 }
 
 export const getUserAction = () => (dispatch) => {

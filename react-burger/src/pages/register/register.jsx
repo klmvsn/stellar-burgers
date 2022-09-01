@@ -10,6 +10,7 @@ import styles from '../common.module.css';
 const RegisterPage = () => {
     const dispatch = useDispatch();
     const { email, password, name } = useSelector(store => store.auth.form);
+    const {isLoading} = useSelector(store => store.auth);
     const cookie = getCookie('token');
 
     const onSubmit = e => {
@@ -34,7 +35,8 @@ const RegisterPage = () => {
                 <div className={`${styles.input} mb-6`}>
                     <PasswordInput value={password} name='password' onChange={onChange} />
                 </div>
-                <Button type='primary' size='medium'>Зарегестрироваться</Button>
+                {isLoading ? <Button type='primary' size='medium' disabled>Подождите</Button> :
+                 <Button type='primary' size='medium'>Зарегестрироваться</Button>}
             </form>
             <p className='text text_type_main-default text_color_inactive mb-4 mt-20'>
                 Уже зарегестрированы?

@@ -17,7 +17,7 @@ export const authSlice = createSlice({
         },
         accessToken: null,
         refreshToken: null,
-        error: false,
+        registerError: false,
         isAuth: false,
         isLoading: false,
         message: '',
@@ -26,7 +26,8 @@ export const authSlice = createSlice({
         resetSuccess: false,
         resetError: false,
         logOutSuccess: false,
-        logOutError: false
+        logOutError: false,
+        updateTokenError: false
     },
     reducers: {
         registerUserRequest: state => { state.isLoading = true },
@@ -41,7 +42,7 @@ export const authSlice = createSlice({
         },
         registerUserFailed: state => {
             state.isLoading = false;
-            state.error = true;
+            state.registerError = true;
         },
         setFormValue: (state, action) => {
             const { field, value } = action.payload;
@@ -53,14 +54,20 @@ export const authSlice = createSlice({
             state.forgetSuccess = true;
             state.message = action.payload.message;
         },
-        forgotPasswordFailed: state => { state.isLoading = false; state.forgetError = true; },
+        forgotPasswordFailed: state => { 
+            state.isLoading = false; 
+            state.forgetError = true; 
+        },
         resetPasswordRequest: state => { state.isLoading = true },
         resetPasswordSuccess: (state, action) => {
             state.isLoading = false;
             state.resetSuccess = true;
             state.message = action.payload.message
         },
-        resetPasswordFailed: state => { state.isLoading = false; state.resetError = true },
+        resetPasswordFailed: state => { 
+            state.isLoading = false; 
+            state.resetError = true 
+        },
         signInRequest: state => { state.isLoading = true },
         signInSuccess: (state, action) => {
             const { user, accessToken, refreshToken } = action.payload;
@@ -71,7 +78,10 @@ export const authSlice = createSlice({
             setCookie('token', state.accessToken);
             localStorage.setItem('refreshToken', refreshToken);
         },
-        signInFailed: state => { state.isLoading = false; state.error = true },
+        signInFailed: state => { 
+            state.isLoading = false; 
+            state.error = true 
+        },
         signOutRequest: state => { state.isLoading = true },
         signOutSuccess: state => {
             state.isLoading = false;
@@ -81,7 +91,10 @@ export const authSlice = createSlice({
             localStorage.removeItem('refreshToken', state.refreshToken);
             localStorage.removeItem('isTokenExpired');
         },
-        signOutFailed: state => { state.isLoading = false; state.logOutError = true },
+        signOutFailed: state => { 
+            state.isLoading = false; 
+            state.logOutError = true 
+        },
         getUserRequest: state => { state.isLoading = true },
         getUserSuccess: (state, action) => {
             state.isLoading = false;
@@ -91,7 +104,7 @@ export const authSlice = createSlice({
         getUserFailed: (state, action) => {
             state.isLoading = false;
             if (action.payload.message === 'jwt expired') {
-                localStorage.setItem('isTokenExpired', true)
+                localStorage.setItem('isTokenExpired', true);
             }
         },
         updateTokenRequest: state => { state.isLoading = true },
@@ -104,7 +117,10 @@ export const authSlice = createSlice({
             localStorage.setItem('refreshToken', refreshToken);
             localStorage.removeItem('isTokenExpired');
         },
-        updateTokenFailed: state => { state.isLoading = false; },
+        updateTokenFailed: state => { 
+            state.isLoading = false;
+            state.updateTokenError = true;
+        },
         updateUserRequest: state => { state.isLoading = true },
         updateUserSuccess: (state, action) => {
             state.isLoading = false;

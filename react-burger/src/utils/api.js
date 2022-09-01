@@ -97,7 +97,7 @@ export const getUser = async () => {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            Authorization: 'Bearer ' + getCookie('token')
+            Authorization: 'Bearer ' + getCookie('token'),
         },
     })
         .then(checkResponse)
