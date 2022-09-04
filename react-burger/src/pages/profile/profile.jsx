@@ -2,9 +2,12 @@ import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-component
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { NavLink, Route, Switch } from "react-router-dom";
+import { NavLink, Route, Switch, useLocation, useRouteMatch } from "react-router-dom";
+import OrderInfo from "../../components/order-info/order-info";
+import Orders from "../../components/orders/orders";
 import { getUserAction, signOutAction, updateUserAction } from "../../services/actions/auth";
-import OrderHistory from "./order-history/order-history";
+import { wsAuthConnectionOpen } from "../../services/actions/wsActions";
+import { wsConnectionClosed } from "../../services/slices/orders";
 import styles from './profile.module.css';
 
 const ProfilePage = () => {
@@ -12,9 +15,18 @@ const ProfilePage = () => {
 
     const { email, name } = useSelector(store => store.auth.user);
     const { isLoading } = useSelector(store => store.auth);
+    const matchOrderDetails = !!useRouteMatch({ path: '/profile/orders/:id' });
+    console.log(matchOrderDetails);
 
+    const location = useLocation();
+    const background = location.state?.background;
+  
     useEffect(() => {
         dispatch(getUserAction());
+        dispatch(wsAuthConnectionOpen());
+        return () => {
+            dispatch(wsConnectionClosed());
+        }
     }, [dispatch])
 
     const [data, setData] = useState({
@@ -55,7 +67,7 @@ const ProfilePage = () => {
 
     return (
         <section className={styles.container}>
-            <nav className={`${styles.nav} pr-15`}>
+            {!matchOrderDetails && <nav className={`${styles.nav} pr-15`}>
                 <ul className={styles.list}>
                     <li className='pt-6 pb-6'>
                         <NavLink to='/profile' exact className={`${styles.link} text text_type_main-medium text_color_inactive`}
@@ -73,11 +85,14 @@ const ProfilePage = () => {
                 <p className='text text_type_main-default text_color_inactive pt-20'>
                     В&nbsp;этом разделе вы&nbsp;можете изменить свои персональные данные
                 </p>
-            </nav>
-            <Switch>
+            </nav>}
+            <Switch location={background || location}>
                 <Route path='/profile/orders' exact>
-                    <OrderHistory />
+                    <Orders />
                 </Route>
+                <Route path='/profile/orders/:id' exact>
+					<OrderInfo />
+				</Route>
                 <Route path='/profile' exact>
                     {isLoading && 'Загрузка...'}
                     {!isLoading && <form className={styles.form} onSubmit={onSubmit}>

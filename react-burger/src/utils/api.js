@@ -14,7 +14,8 @@ export const postOrder = async (orderId) => {
     return await fetch(`${BASE_URL}/orders`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + getCookie('token')
         },
         body: JSON.stringify({
             ingredients: orderId

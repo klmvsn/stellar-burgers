@@ -22,6 +22,7 @@ import { getUserAction, updateTokenAction } from '../../services/actions/auth';
 import { getCookie } from '../../utils/cookie';
 import NotFound from '../../pages/not-found/not-found';
 import Feed from '../../pages/feed/feed';
+import OrderInfo from '../order-info/order-info';
 
 const App = () => {
     const dispatch = useDispatch();
@@ -52,7 +53,7 @@ const App = () => {
 
     const handleCloseModal = () => {
         dispatch(resetModal());
-        history.replace('/');
+        history.goBack();
     }
 
     return (
@@ -80,6 +81,9 @@ const App = () => {
                 <Route path='/feed' exact>
                     <Feed />
                 </Route>
+                <Route path='/feed/:id' exact>
+                    <OrderInfo />
+                </Route>
                 <Route path='/' exact>
                     <main className={styles.content}>
                         {isLoading && 'Загрузка...'}
@@ -103,6 +107,20 @@ const App = () => {
                         <IngridientDetails />
                     </Modal>
                 </Route>
+            }
+            {background &&
+                <Route path='/feed/:id' exact>
+                    <Modal onClose={handleCloseModal}>
+                        <OrderInfo />
+                    </Modal>
+                </Route>
+            }
+            {background &&
+                <ProtectedRoute path='/profile/orders/:id' exact>
+                    <Modal onClose={handleCloseModal}>
+                        <OrderInfo />
+                    </Modal>
+                </ProtectedRoute>
             }
             {isModalOpen && (type !== 'ingridient') &&
                 <Modal onClose={handleCloseModal}>

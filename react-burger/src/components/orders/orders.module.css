@@ -1,0 +1,19 @@
+.list {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow-y: auto;
+    max-width: 600px;
+    width: 100%;
+}
+
+.item {
+    display: block;
+    list-style: none;
+    width: 100%;
+}
+
+.link {
+    text-decoration: none;
+    color: inherit;
+}

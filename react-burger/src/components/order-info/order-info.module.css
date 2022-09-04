@@ -1,0 +1,26 @@
+.container {
+    display: flex;
+    flex-direction: column;
+}
+
+.statusDone {
+    color: var(	--colors-interface-success);
+}
+
+.statusCancel {
+    color: var(	--colors-interface-error);
+}
+
+.list {
+    margin: 0;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.sumContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
