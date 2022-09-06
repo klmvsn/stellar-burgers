@@ -6,7 +6,7 @@ import styles from './orders.module.css';
 
 const Orders = () => {
     const location = useLocation();
-    const orders = useSelector(store => store.orders?.orders);
+    const orders = useSelector(store => store.orders.orders);
     const match = useRouteMatch();
 
     return (

@@ -18,8 +18,7 @@ import ForgotPasswordPage from '../../pages/forgot-password/forgot-password';
 import ResetPasswordPage from '../../pages/reset-password/reset-password';
 import ProfilePage from '../../pages/profile/profile';
 import ProtectedRoute from '../protected-route/protected-route';
-import { getUserAction, updateTokenAction } from '../../services/actions/auth';
-import { getCookie } from '../../utils/cookie';
+import { getUserAction } from '../../services/actions/auth';
 import NotFound from '../../pages/not-found/not-found';
 import Feed from '../../pages/feed/feed';
 import OrderInfo from '../order-info/order-info';
@@ -31,9 +30,7 @@ const App = () => {
     const info = useSelector(store => store.orderDetails.info);
 
     const token = localStorage.getItem('refreshToken');
-    const cookie = getCookie('token');
-    const isTokenExpired = localStorage.getItem('isTokenExpired')
-
+   
     const location = useLocation();
     const background = location.state?.background;
     const history = useHistory();
@@ -43,13 +40,9 @@ const App = () => {
     }, [dispatch])
 
     useEffect(() => {
-        if (isTokenExpired) {
-            dispatch(updateTokenAction());
-        }
-        if (cookie && token) {
+        if (token)
             dispatch(getUserAction());
-        }
-    }, [dispatch, cookie, token, isTokenExpired]);
+    }, [dispatch, token]);
 
     const handleCloseModal = () => {
         dispatch(resetModal());

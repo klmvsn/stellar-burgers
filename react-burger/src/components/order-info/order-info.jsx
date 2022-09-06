@@ -1,8 +1,8 @@
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { nanoid } from "nanoid";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { formatDate } from "../../utils/formatDate";
 import { statusFormat } from "../../utils/statusFormat";
 import OrderInfoIngridient from "./order-info-ingridient/order-info-ingridient";
@@ -14,6 +14,15 @@ const OrderInfo = () => {
     const orders = useSelector(store => store.orders.orders);
     const order = orders?.find(order => order._id === id);
     const ingridients = useSelector(store => store.burgerIngridients.ingridients);
+
+    const history = useHistory();
+    const location = useLocation();
+
+
+    useEffect(() => {
+        if (history.action === "POP")
+            history.replace({ pathname: location.pathname });
+    }, [location.pathname, history]);
 
     const orderIngridients = useMemo(() => {
         return order?.ingredients.map(id => {
