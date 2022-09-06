@@ -6,8 +6,7 @@ import { NavLink, Route, Switch, useLocation } from "react-router-dom";
 import OrderInfo from "../../components/order-info/order-info";
 import Orders from "../../components/orders/orders";
 import { getUserAction, signOutAction, updateUserAction } from "../../services/actions/auth";
-import { wsAuthConnectionOpen } from "../../services/actions/wsActions";
-import { wsConnectionClosed } from "../../services/slices/orders";
+import { wsAuthConnectionOpen, wsConnectionClose } from "../../services/actions/wsActions";
 import styles from './profile.module.css';
 
 const ProfilePage = () => {
@@ -23,9 +22,9 @@ const ProfilePage = () => {
         dispatch(getUserAction());
         dispatch(wsAuthConnectionOpen());
         return () => {
-            dispatch(wsConnectionClosed());
+            dispatch(wsConnectionClose());
         }
-    }, [dispatch])
+    },[dispatch])
 
     const [data, setData] = useState({
         name: '',

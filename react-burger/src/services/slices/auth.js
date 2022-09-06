@@ -89,7 +89,6 @@ export const authSlice = createSlice({
             state.user = '';
             deleteCookie('token');
             localStorage.removeItem('refreshToken', state.refreshToken);
-            localStorage.removeItem('isTokenExpired');
         },
         signOutFailed: state => {
             state.isLoading = false;
@@ -99,7 +98,6 @@ export const authSlice = createSlice({
         getUserSuccess: (state, action) => {
             state.isLoading = false;
             state.user = action.payload.user;
-            localStorage.removeItem('isTokenExpired');
         },
         getUserFailed: (state, action) => {
             state.isLoading = false;
@@ -112,7 +110,6 @@ export const authSlice = createSlice({
             state.refreshToken = refreshToken;
             setCookie('token', state.accessToken);
             localStorage.setItem('refreshToken', refreshToken);
-            localStorage.removeItem('isTokenExpired');
         },
         updateTokenFailed: state => {
             state.isLoading = false;
@@ -123,11 +120,8 @@ export const authSlice = createSlice({
             state.isLoading = false;
             state.user = action.payload.user;
         },
-        updateUserFailed: (state, action) => {
+        updateUserFailed: state => {
             state.isLoading = false;
-            if (action.payload.message === 'jwt expired') {
-                localStorage.setItem('isTokenExpired', true)
-            }
         }
     }
 })

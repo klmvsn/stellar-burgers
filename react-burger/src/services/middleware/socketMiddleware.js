@@ -8,10 +8,12 @@ export const socketMiddleware = (wsUrl, wsActions, isAuth = false) => {
         return next => action => {
             const { dispatch } = store;
             const { type, payload } = action;
-            const { wsConnectionOpen, wsSendMessage } = wsActions
+            const { wsConnectionOpen, wsSendMessage, wsClose } = wsActions
             const accessToken = getCookie('token');
             if (type === wsConnectionOpen) {
                 socket = !isAuth ? new WebSocket(wsUrl) : new WebSocket(`${wsUrl}?token=${accessToken}`)
+            } else if (socket && type === wsClose) {
+                socket.close(1000);
             }
 
             if (socket) {
@@ -28,7 +30,13 @@ export const socketMiddleware = (wsUrl, wsActions, isAuth = false) => {
                     dispatch(wsGetOrders(restParsedData));
                 }
                 socket.onclose = event => {
-                    dispatch(wsConnectionClosed(event));
+                    if (event.wasClean) {
+                        dispatch(wsConnectionClosed());
+                    }
+                    else {
+                        dispatch(wsConnectionError('Ошибка'));
+                        dispatch(wsConnectionClosed(event));
+                    }
                 }
                 if (type === wsSendMessage) {
                     const orders = { ...payload };

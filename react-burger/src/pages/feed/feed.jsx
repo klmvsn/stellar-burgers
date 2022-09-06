@@ -3,8 +3,7 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import OrderStats from '../../components/order-stats/order-stats';
 import Orders from '../../components/orders/orders';
-import { wsConnectionOpen } from '../../services/actions/wsActions';
-import { wsConnectionClosed } from '../../services/slices/orders';
+import { wsConnectionClose, wsConnectionOpen } from '../../services/actions/wsActions';
 import styles from './feed.module.css'
 
 const Feed = () => {
@@ -14,9 +13,9 @@ const Feed = () => {
     useEffect(() => {
         dispatch(wsConnectionOpen());
         return () => {
-            dispatch(wsConnectionClosed());
+            dispatch(wsConnectionClose());
         }
-    }, [dispatch])
+    },[dispatch])
 
     return (
         <section className={styles.container}>

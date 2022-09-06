@@ -11,7 +11,7 @@ const Orders = () => {
 
     return (
         <ul className={`${styles.list} custom-scroll`}>
-            {orders && orders.map((order) => {
+            {orders && orders?.map((order) => {
                 return (
                     <li key={nanoid()} className={`${styles.item} mb-4`}>
                         <Link to={{ pathname: `${match.path}/${order._id}`, state: { background: location } }} key={nanoid()} className={styles.link}>
