@@ -1,4 +1,5 @@
 import { registerUser, forgotPassword, resetPassword, signIn, signOut, getUser, updateToken, updateUser } from "../../utils/api";
+import { setCookie } from "../../utils/cookie";
 import {
     forgotPasswordFailed, forgotPasswordRequest, forgotPasswordSuccess,
     getUserFailed,
@@ -50,9 +51,13 @@ export const getUserAction = () => (dispatch) => {
         .catch((err) => {
             if(err.message === 'jwt expired'){ 
                 updateToken()
-                    .then(res => dispatch(updateTokenSuccess(res)))
-                    .then(() => dispatch(getUserAction()))
-                    .catch(() => dispatch(updateTokenFailed()))
+                    .then(res => {
+                        setCookie('token', res.accessToken);
+                        localStorage.setItem('refreshToken', res.refreshToken);
+                    })
+                    .then(getUser())
+                    .then(res => dispatch(getUserSuccess(res)))
+                    .catch(() => getUserFailed())
             }
             else {
                 dispatch(getUserFailed());
