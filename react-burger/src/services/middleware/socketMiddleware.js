@@ -34,7 +34,7 @@ export const socketMiddleware = (wsUrl, wsActions, isAuth = false) => {
                         dispatch(wsConnectionClosed());
                     }
                     else {
-                        dispatch(wsConnectionError('Ошибка'));
+                        dispatch(wsConnectionError(event));
                         dispatch(wsConnectionClosed(event));
                     }
                 }

@@ -42,7 +42,7 @@ const App = () => {
     }, [dispatch])
 
     useEffect(() => {
-        if (cookie && !token)
+        if (!cookie && token)
             dispatch(updateTokenAction())
         if (cookie && token)
             dispatch(getUserAction());
