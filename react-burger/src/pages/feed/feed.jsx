@@ -11,7 +11,6 @@ import styles from './feed.module.css'
 const Feed = () => {
     const dispatch = useDispatch();
     const { wsConnected } = useSelector(store => store.orders);
-    console.log(wsConnected);
 
     const location = useLocation();
     const background = location.state?.background;
@@ -24,21 +23,24 @@ const Feed = () => {
     }, [dispatch])
 
     return (
-        <section className={styles.container}>
-            <h2 className='text text_type_main-large pt-10 pb-5'>Лента заказов</h2>
-            <Switch location={background || location}>
-                <Route path='/feed/:id' exact>
-                    <OrderInfo />
-                </Route>
-                <Route path='/feed' exact>
-                    {!wsConnected && 'Загрузка...'}
-                    {wsConnected && <div className={styles.feedContainer}>
-                        <Orders />
-                        <OrderStats />
-                    </div>}
-                </Route>
-            </Switch>
-        </section>
+
+        <Switch location={background || location}>
+            <Route path='/feed/:id' exact>
+                <OrderInfo />
+            </Route>
+            <Route path='/feed' exact>
+                {!wsConnected && 'Загрузка...'}
+                {wsConnected &&
+                    <section className={styles.container}>
+                        <h2 className='text text_type_main-large pt-10 pb-5'>Лента заказов</h2>
+                        <div className={styles.feedContainer}>
+                            <Orders />
+                            <OrderStats />
+                        </div>
+                    </section>}
+            </Route>
+        </Switch >
+
     )
 }
 

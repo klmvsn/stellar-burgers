@@ -53,8 +53,8 @@ const OrderInfo = () => {
     }
 
     return (
-        <section className={`${styles.container} mt-10 mb-10 pr-10 pl-10`}>
-            <p className='text text_type_digits-default pb-10'>#{order.number}</p>
+        <section className={`${styles.container} pt-10 pb-10 pr-10 pl-10`}>
+            <p className={`text text_type_digits-default pb-10 ${styles.number}`}>#{order.number}</p>
             <h2 className='text text_type_main-medium pb-3'>{order.name}</h2>
             <p className={`text text_type_main-default pb-15
                 ${order.status === 'done' ? styles.statusDone : order.status === 'cancel' ? styles.statusCancel : ''}`}>
