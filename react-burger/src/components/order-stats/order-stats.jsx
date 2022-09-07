@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import { useSelector } from 'react-redux';
 import styles from './order-stats.module.css';
 
@@ -16,7 +15,7 @@ const OrderStats = () => {
                     <ul className={styles.columns}>
                         {ordersDone?.map((order) =>{
                             return (
-                                <li className={`text text_type_digits-default pb-2 ${styles.ordersDone}`} key={nanoid()}>{order.number}</li>
+                                <li className={`text text_type_digits-default pb-2 ${styles.ordersDone}`} key={order._id}>{order.number}</li>
                             )
                         })}
                     </ul>
@@ -26,7 +25,7 @@ const OrderStats = () => {
                     <ul className={styles.columns}>
                         {ordersPending?.map((order) =>{
                             return (
-                                <li className='text text_type_digits-default pb-2' key={nanoid()}>{order.number}</li>
+                                <li className='text text_type_digits-default pb-2' key={order._id}>{order.number}</li>
                             )
                         })}
                     </ul>

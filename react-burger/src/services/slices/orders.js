@@ -22,7 +22,7 @@ export const ordersSlice = createSlice({
             state.total = 0;
             state.totalToday = 0;
         },
-        wsGetOrders: (state, action) => {
+        wsOnMessage: (state, action) => {
             state.orders = action.payload.orders;
             state.total = action.payload.total;
             state.totalToday = action.payload.totalToday;
@@ -30,5 +30,5 @@ export const ordersSlice = createSlice({
     }
 })
 
-export const { wsConnectionSuccess, wsConnectionError, wsConnectionClosed, wsGetOrders} = ordersSlice.actions;
+export const { wsConnectionSuccess, wsConnectionError, wsConnectionClosed, wsOnMessage} = ordersSlice.actions;
 export default ordersSlice.reducer

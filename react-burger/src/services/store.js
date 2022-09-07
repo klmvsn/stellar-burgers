@@ -13,7 +13,7 @@ import { WS_AUTH_CONNECTION_START, WS_CLOSE, WS_CONNECTION_START, WS_SEND_MESSAG
 const wsActions = {
     wsConnectionOpen: WS_CONNECTION_START,
     wsSendMessage: WS_SEND_MESSAGE,
-    wsClose: WS_CLOSE
+    wsClose: WS_CLOSE,
 }
 const wsAuthActions = {
     wsConnectionOpen: WS_AUTH_CONNECTION_START,

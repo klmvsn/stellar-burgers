@@ -1,5 +1,4 @@
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { nanoid } from "nanoid";
 import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router-dom";
@@ -65,7 +64,7 @@ const OrderInfo = () => {
             <ul className={`${styles.list} custom-scroll `}>
                 {ingridientsSet?.map(item => {
                     return (
-                        <OrderInfoIngridient item={item} count={count(item)} key={nanoid()} />
+                        <OrderInfoIngridient item={item} count={count(item)} key={item._id} />
                     )
                 })}
             </ul>

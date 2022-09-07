@@ -1,5 +1,5 @@
 import { getCookie } from "../../utils/cookie";
-import { wsConnectionClosed, wsConnectionError, wsConnectionSuccess, wsGetOrders } from "../slices/orders";
+import { wsConnectionClosed, wsConnectionError, wsConnectionSuccess, wsOnMessage } from "../slices/orders";
 
 export const socketMiddleware = (wsUrl, wsActions, isAuth = false) => {
     return store => {
@@ -8,12 +8,10 @@ export const socketMiddleware = (wsUrl, wsActions, isAuth = false) => {
         return next => action => {
             const { dispatch } = store;
             const { type, payload } = action;
-            const { wsConnectionOpen, wsSendMessage, wsClose } = wsActions
+            const { wsConnectionOpen, wsSendMessage } = wsActions
             const accessToken = getCookie('token');
             if (type === wsConnectionOpen) {
                 socket = !isAuth ? new WebSocket(wsUrl) : new WebSocket(`${wsUrl}?token=${accessToken}`)
-            } else if (socket && type === wsClose) {
-                socket.close(1000);
             }
 
             if (socket) {
@@ -27,17 +25,19 @@ export const socketMiddleware = (wsUrl, wsActions, isAuth = false) => {
                     const { data } = event;
                     const parsedData = JSON.parse(data);
                     const { success, ...restParsedData } = parsedData;
-                    dispatch(wsGetOrders(restParsedData));
+                    dispatch(wsOnMessage(restParsedData));
                 }
                 socket.onclose = event => {
+                    socket.close();
                     if (event.wasClean) {
                         dispatch(wsConnectionClosed());
                     }
                     else {
                         dispatch(wsConnectionError(event));
-                        dispatch(wsConnectionClosed(event));
+                        dispatch(wsConnectionClosed());
                     }
                 }
+
                 if (type === wsSendMessage) {
                     const orders = { ...payload };
                     socket.send(JSON.stringify(orders));

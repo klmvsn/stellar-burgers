@@ -1,4 +1,3 @@
-import { nanoid } from 'nanoid';
 import { useSelector } from 'react-redux';
 import { Link, useLocation, useRouteMatch } from 'react-router-dom';
 import OrderCard from './order-card/order-card';
@@ -13,8 +12,8 @@ const Orders = () => {
         <ul className={`${styles.list} custom-scroll`}>
             {orders && orders?.map((order) => {
                 return (
-                    <li key={nanoid()} className={`${styles.item} mb-4`}>
-                        <Link to={{ pathname: `${match.path}/${order._id}`, state: { background: location } }} key={nanoid()} className={styles.link}>
+                    <li key={order._id} className={`${styles.item} mb-4`}>
+                        <Link to={{ pathname: `${match.path}/${order._id}`, state: { background: location } }} key={order._id} className={styles.link}>
                             <OrderCard order={order} key={order._id} />
                         </Link>
                     </li>

@@ -23,6 +23,7 @@ import NotFound from '../../pages/not-found/not-found';
 import Feed from '../../pages/feed/feed';
 import OrderInfo from '../order-info/order-info';
 import { getCookie } from '../../utils/cookie';
+import { wsConnectionClose } from '../../services/actions/wsActions';
 
 const App = () => {
     const dispatch = useDispatch();
@@ -39,6 +40,9 @@ const App = () => {
 
     useEffect(() => {
         dispatch(renderIngridients());
+        return () => {
+            dispatch(wsConnectionClose());
+        }
     }, [dispatch])
 
     useEffect(() => {
@@ -75,7 +79,7 @@ const App = () => {
                 <Route path='/ingredients/:id' exact>
                     <IngridientDetails />
                 </Route>
-                <Route path='/feed' exact>
+                <Route path='/feed'>
                     <Feed />
                 </Route>
                 <Route path='/feed/:id' exact>

@@ -1,5 +1,4 @@
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { nanoid } from 'nanoid';
 import { useEffect, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory, useLocation } from 'react-router-dom';
@@ -59,8 +58,8 @@ const OrderCard = ({ order }) => {
                 <ul className={styles.list}>
                     {orderIngridients && displayedItems.map((item, index) => {
                         return (
-                            <li className={styles.item} key={nanoid()} style={{ left: index * ITEM_DISPLAY, zIndex: MAX_ITEMS - index }}>
-                                <IngridientImage image={item.image} alt={item.name} key={item._id} />
+                            <li className={styles.item} key={item._id+index} style={{ left: index * ITEM_DISPLAY, zIndex: MAX_ITEMS - index }}>
+                                <IngridientImage image={item.image} alt={item.name} key={item._id+index} />
                             </li>
                         )
                     })}

@@ -11,6 +11,7 @@ import styles from './feed.module.css'
 const Feed = () => {
     const dispatch = useDispatch();
     const { wsConnected } = useSelector(store => store.orders);
+
     const location = useLocation();
     const background = location.state?.background;
 
