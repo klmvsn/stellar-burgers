@@ -3,6 +3,7 @@ export const WS_SEND_MESSAGE = 'WS_SEND_MESSAGE';
 export const WS_AUTH_CONNECTION_START = 'WS_AUTH_CONNECTION_START';
 export const WS_CLOSE = 'WS_CLOSE';
 
+
 export const wsConnectionOpen =() => {
     return {
         type: WS_CONNECTION_START
