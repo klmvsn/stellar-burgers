@@ -19,9 +19,10 @@ import ResetPasswordPage from '../../pages/reset-password/reset-password';
 import ProfilePage from '../../pages/profile/profile';
 import ProtectedRoute from '../protected-route/protected-route';
 import { getUserAction, updateTokenAction } from '../../services/actions/auth';
-import { getCookie } from '../../utils/cookie';
 import NotFound from '../../pages/not-found/not-found';
 import Feed from '../../pages/feed/feed';
+import OrderInfo from '../order-info/order-info';
+import { getCookie } from '../../utils/cookie';
 
 const App = () => {
     const dispatch = useDispatch();
@@ -31,7 +32,6 @@ const App = () => {
 
     const token = localStorage.getItem('refreshToken');
     const cookie = getCookie('token');
-    const isTokenExpired = localStorage.getItem('isTokenExpired')
 
     const location = useLocation();
     const background = location.state?.background;
@@ -42,17 +42,15 @@ const App = () => {
     }, [dispatch])
 
     useEffect(() => {
-        if (isTokenExpired) {
-            dispatch(updateTokenAction());
-        }
-        if (cookie && token) {
+        if (!cookie && token)
+            dispatch(updateTokenAction())
+        if (cookie && token)
             dispatch(getUserAction());
-        }
-    }, [dispatch, cookie, token, isTokenExpired]);
+    }, [dispatch, token, cookie]);
 
     const handleCloseModal = () => {
         dispatch(resetModal());
-        history.replace('/');
+        history.goBack();
     }
 
     return (
@@ -77,8 +75,11 @@ const App = () => {
                 <Route path='/ingredients/:id' exact>
                     <IngridientDetails />
                 </Route>
-                <Route path='/feed' exact>
+                <Route path='/feed'>
                     <Feed />
+                </Route>
+                <Route path='/feed/:id' exact>
+                    <OrderInfo />
                 </Route>
                 <Route path='/' exact>
                     <main className={styles.content}>
@@ -103,6 +104,20 @@ const App = () => {
                         <IngridientDetails />
                     </Modal>
                 </Route>
+            }
+            {background &&
+                <Route path='/feed/:id' exact>
+                    <Modal onClose={handleCloseModal}>
+                        <OrderInfo />
+                    </Modal>
+                </Route>
+            }
+            {background &&
+                <ProtectedRoute path='/profile/orders/:id' exact>
+                    <Modal onClose={handleCloseModal}>
+                        <OrderInfo />
+                    </Modal>
+                </ProtectedRoute>
             }
             {isModalOpen && (type !== 'ingridient') &&
                 <Modal onClose={handleCloseModal}>

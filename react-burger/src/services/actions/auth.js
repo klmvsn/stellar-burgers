@@ -47,7 +47,20 @@ export const getUserAction = () => (dispatch) => {
     dispatch(getUserRequest());
     getUser()
         .then(res => dispatch(getUserSuccess(res)))
-        .catch((err) => dispatch(getUserFailed(err)))
+        .catch((err) => {
+            if (err.message === 'jwt expired' || err.message === 'jwt malformed') {
+                updateToken()
+                    .then(res => {
+                        dispatch(updateTokenSuccess(res));
+                    })
+                    .then(() => getUser())
+                    .then(res => dispatch(getUserSuccess(res)))
+                    .catch(() => getUserFailed())
+            }
+            else {
+                dispatch(getUserFailed());
+            }
+        })
 }
 
 export const updateTokenAction = () => (dispatch) => {

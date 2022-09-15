@@ -2,9 +2,11 @@ import { Button, Input } from "@ya.praktikum/react-developer-burger-ui-component
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { NavLink, Route, Switch } from "react-router-dom";
+import { NavLink, Route, Switch, useLocation } from "react-router-dom";
+import OrderInfo from "../../components/order-info/order-info";
+import Orders from "../../components/orders/orders";
 import { getUserAction, signOutAction, updateUserAction } from "../../services/actions/auth";
-import OrderHistory from "./order-history/order-history";
+import { wsAuthConnectionOpen, wsConnectionClose } from "../../services/actions/wsActions";
 import styles from './profile.module.css';
 
 const ProfilePage = () => {
@@ -13,9 +15,16 @@ const ProfilePage = () => {
     const { email, name } = useSelector(store => store.auth.user);
     const { isLoading } = useSelector(store => store.auth);
 
+    const location = useLocation();
+    const background = location.state?.background;
+
     useEffect(() => {
         dispatch(getUserAction());
-    }, [dispatch])
+        dispatch(wsAuthConnectionOpen());
+        return () => {
+            dispatch(wsConnectionClose());
+        }
+    },[dispatch])
 
     const [data, setData] = useState({
         name: '',
@@ -74,9 +83,12 @@ const ProfilePage = () => {
                     В&nbsp;этом разделе вы&nbsp;можете изменить свои персональные данные
                 </p>
             </nav>
-            <Switch>
+            <Switch location={background || location}>
                 <Route path='/profile/orders' exact>
-                    <OrderHistory />
+                    <Orders />
+                </Route>
+                <Route path='/profile/orders/:id' exact>
+                    <OrderInfo />
                 </Route>
                 <Route path='/profile' exact>
                     {isLoading && 'Загрузка...'}

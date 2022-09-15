@@ -54,9 +54,9 @@ export const authSlice = createSlice({
             state.forgetSuccess = true;
             state.message = action.payload.message;
         },
-        forgotPasswordFailed: state => { 
-            state.isLoading = false; 
-            state.forgetError = true; 
+        forgotPasswordFailed: state => {
+            state.isLoading = false;
+            state.forgetError = true;
         },
         resetPasswordRequest: state => { state.isLoading = true },
         resetPasswordSuccess: (state, action) => {
@@ -64,9 +64,9 @@ export const authSlice = createSlice({
             state.resetSuccess = true;
             state.message = action.payload.message
         },
-        resetPasswordFailed: state => { 
-            state.isLoading = false; 
-            state.resetError = true 
+        resetPasswordFailed: state => {
+            state.isLoading = false;
+            state.resetError = true
         },
         signInRequest: state => { state.isLoading = true },
         signInSuccess: (state, action) => {
@@ -78,9 +78,9 @@ export const authSlice = createSlice({
             setCookie('token', state.accessToken);
             localStorage.setItem('refreshToken', refreshToken);
         },
-        signInFailed: state => { 
-            state.isLoading = false; 
-            state.error = true 
+        signInFailed: state => {
+            state.isLoading = false;
+            state.error = true
         },
         signOutRequest: state => { state.isLoading = true },
         signOutSuccess: state => {
@@ -89,23 +89,18 @@ export const authSlice = createSlice({
             state.user = '';
             deleteCookie('token');
             localStorage.removeItem('refreshToken', state.refreshToken);
-            localStorage.removeItem('isTokenExpired');
         },
-        signOutFailed: state => { 
-            state.isLoading = false; 
-            state.logOutError = true 
+        signOutFailed: state => {
+            state.isLoading = false;
+            state.logOutError = true
         },
         getUserRequest: state => { state.isLoading = true },
         getUserSuccess: (state, action) => {
             state.isLoading = false;
             state.user = action.payload.user;
-            localStorage.removeItem('isTokenExpired');
         },
         getUserFailed: (state, action) => {
             state.isLoading = false;
-            if (action.payload.message === 'jwt expired') {
-                localStorage.setItem('isTokenExpired', true);
-            }
         },
         updateTokenRequest: state => { state.isLoading = true },
         updateTokenSuccess: (state, action) => {
@@ -115,9 +110,8 @@ export const authSlice = createSlice({
             state.refreshToken = refreshToken;
             setCookie('token', state.accessToken);
             localStorage.setItem('refreshToken', refreshToken);
-            localStorage.removeItem('isTokenExpired');
         },
-        updateTokenFailed: state => { 
+        updateTokenFailed: state => {
             state.isLoading = false;
             state.updateTokenError = true;
         },
@@ -126,11 +120,8 @@ export const authSlice = createSlice({
             state.isLoading = false;
             state.user = action.payload.user;
         },
-        updateUserFailed: (state, action) => {
+        updateUserFailed: state => {
             state.isLoading = false;
-            if (action.payload.message === 'jwt expired') {
-                localStorage.setItem('isTokenExpired', true)
-            }
         }
     }
 })

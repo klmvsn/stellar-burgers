@@ -1,0 +1,59 @@
+.container {
+    background-color: var(--background);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, .04), 0px 0px 2px rgba(0, 0, 0, .06), 0px 0px 1px rgba(0, 0, 0, .04);
+    border-radius: 40px;
+}
+
+.orderId {
+    display: flex;
+    justify-content: space-between;
+}
+
+.statusDone {
+    color: var(	--colors-interface-success);
+}
+
+.statusCancel {
+    color: var(	--colors-interface-error);
+}
+
+.list {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 64px;
+}
+
+.item {
+    list-style: none;
+    position: absolute;
+    top: 0;
+}
+
+.priceContainer {
+    display: flex;
+    align-items: center;
+}
+
+.price {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.sum {
+    display: inline-block;
+}
+
+.cover {
+  position: absolute;
+  z-index: 1;
+  width: 64px;
+  height: 64px;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(28, 28, 33, .6);
+}
